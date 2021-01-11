@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  schedule:
+    - cron:  '27 7 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    environment: default
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build keymaps
+        run: ./github_build.sh
+
+      - name: Deploy keymaps
+        run: ./github_commit.sh
+        env:
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
